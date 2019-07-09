@@ -1,4 +1,5 @@
 import * as createjs from 'createjs-module';
+import * as _ from 'lodash';
 
 import StartComponent from './StartComponent.js'
 
@@ -11,43 +12,52 @@ class Init{
     console.log(this.stage);
     createjs.Ticker.addEventListener("tick", this.stage);
     // this.createStartComponent();
-    const startComponentObj = new StartComponent();
-    const startComponentObj2 = new StartComponent();
-    const startComponentObj3 = new StartComponent();
-    startComponentObj.x = 100;
-    startComponentObj.y = 100;
-    this.stage.addChild(startComponentObj,startComponentObj2,startComponentObj3);
+    // const startComponentObj = new StartComponent();
+    // const startComponentObj2 = new StartComponent();
+    // const startComponentObj3 = new StartComponent();
+    // startComponentObj.x = 100;
+    // startComponentObj.y = 100;
+    // this.stage.addChild(startComponentObj,startComponentObj2,startComponentObj3);
+    this.startArr = [];
+    this.createStartComponent();
   }
 
   createStartComponent(){
+    const x = 60;
+    const y = 60;
     var shape = new createjs.Shape();
-    shape.setBounds(0,0,30);
+    shape.setBounds(x,y,30);
     const g = shape.graphics;
     g.setStrokeStyle(1);
     g.beginStroke("#000000");
-    g.beginFill("#e8f7ff");
-    g.drawCircle(0,0,30);
+    g.beginFill('pink');
+    g.drawCircle(x,y,30);
     this.stage.addChild(shape);
 
     shape.addEventListener('mousedown', (event)=>{
+      const startComponentObj = new StartComponent();
+      this.stage.addChild(startComponentObj);
+      this.startArr.push(startComponentObj);
+      startComponentObj.mouseDownEventHandler(event);
       // const {x,y} = shape.globalToLocal(event.stageX,event.stageY);
       // console.log(shape.localToGlobal(event.stageX,event.stageY));
-      const bounds = shape.getBounds();
-      // shape.getBounds().y;
-      const { x, y } = shape.localToGlobal(bounds.x,bounds.y);
-      // console.log(x - event.stageX,y - event.stageY,event);
-      this.diffX = x - event.stageX;
-      this.diffY = y - event.stageY;
-      console.log(this.diffX, this.diffY);
+      // const bounds = shape.getBounds();
+      // // shape.getBounds().y;
+      // const { x, y } = shape.localToGlobal(bounds.x,bounds.y);
+      // // console.log(x - event.stageX,y - event.stageY,event);
+      // this.diffX = x - event.stageX;
+      // this.diffY = y - event.stageY;
+      // console.log(this.diffX, this.diffY);
       // console.log(event);
     })
 
     shape.addEventListener('pressmove', (event)=>{
+      _.last(this.startArr).pressMoveEventHandler(event);
       // const {x,y} = shape.globalToLocal(event.stageX,event.stageY);
       // console.log(shape.globalToLocal(event.stageX,event.stageY));
-      shape.x = event.stageX - this.diffX;
-      shape.y = event.stageY - this.diffY;
-      console.log(event);
+      // shape.x = event.stageX - this.diffX;
+      // shape.y = event.stageY - this.diffY;
+      // console.log(event);
     })
   }
 }

@@ -5,21 +5,21 @@ import DotCircles from './DotCircles.js'
 export default class StartComponent extends createjs.Container {
   constructor(config = {}){
     super();
-    _.bindAll(this,'mouseDownEventHandler','pressMoveEventHandler','mouseDownEventHandler',"addEventListeners","removeEventListeners");
+    _.bindAll(this,'mouseDownEventHandler','pressMoveEventHandler','mouseDownEventHandler','mouseOverEventHandler',"addEventListeners","removeEventListeners");
     console.log('in StartComponent');
     this.create(config);
-    const dotCirclesObj = new DotCircles({},this);
-    this.addChild(dotCirclesObj);
+    this.dotCirclesObj = new DotCircles({},this);
+    this.addChild(this.dotCirclesObj);
   }
 
   create({width = 0, height = 0, radius = 30, fillColor = 'pink', strokeColor = '#000000'}){
     this.shape = new createjs.Shape();
-    this.shape.set({ x:30, y:30 });
+    this.shape.set({ x:60, y:60 });
     this.shape.setBounds(width,height,radius);
     this.setBounds(0 ,0 ,60,60);
     const g = this.shape.graphics;
     g.setStrokeStyle(1);
-    g.beginStroke();
+    g.beginStroke('black');
     g.beginFill(fillColor);
     g.drawCircle(width,height,radius);
     this.addChild(this.shape);
@@ -28,13 +28,21 @@ export default class StartComponent extends createjs.Container {
   }
 
   addEventListeners(){
-    this.addEventListener('mousedown',this.mouseDownEventHandler)
-    this.addEventListener('pressmove',this.pressMoveEventHandler)
+    this.addEventListener('mousedown',this.mouseDownEventHandler);
+    this.addEventListener('pressmove',this.pressMoveEventHandler);
+    this.addEventListener('rollover',this.mouseOverEventHandler);
+
   }
 
   removeEventListeners(){
-    this.removeEventListener('mousedown',this.mouseDownEventHandler)
-    this.removeEventListener('pressmove',this.pressMoveEventHandler)
+    this.removeEventListener('mousedown',this.mouseDownEventHandler);
+    this.removeEventListener('pressmove',this.pressMoveEventHandler);
+    this.addEventListener('rollover',this.mouseOverEventHandler);
+  }
+
+  mouseOverEventHandler(event){
+    console.log('here');
+    this.dotCirclesObj.visible = true;
   }
   mouseMoveEventHandler(event){
     console.log('mouse move');
@@ -56,5 +64,12 @@ export default class StartComponent extends createjs.Container {
     console.log(x,y);
     this.x = x - this.diffX;
     this.y = y - this.diffY;
+  }
+
+  mouseDown(x,y){
+
+  }
+  moveElement(x , y){
+
   }
 }
