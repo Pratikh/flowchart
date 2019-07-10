@@ -6,7 +6,6 @@ export default class DotCircles extends createjs.Container {
   constructor(config = {},container){
     super();
     _.bindAll(this,'mouseDownEventHandler','pressMoveEventHandler','mouseDownEventHandler','mouseOverEventHandler','pressUpEventHandler');
-    // console.log('in StartComponent',ConnectorLine);
     this.shapeArr = [];
     this.config = config;
     this.x = config.x;
@@ -15,38 +14,37 @@ export default class DotCircles extends createjs.Container {
     this.create(config);
     this.arrangeDots(container);
     this.container = container;
-    console.log(this.container);
   }
 
-  create({width = 5, height = 5, radius = 5, fillColor = 'yellow', strokeColor = '#000000'}){
+  create({x = 0, y = 0, radius = 7, fillColor = 'yellow', strokeColor = '#000000'}){
     for(let i = 0; i<4; i++){
-      // this.setBounds(40,40,40,40);
+      const dotCircleContainer = new createjs.Container();
+      dotCircleContainer.name = 'dotContainer';
+      dotCircleContainer.setBounds(0,0,14,14);
       const shape = new createjs.Shape();
-      shape.setBounds(width,height,radius);
-      shape.connectedLinesData = [];
+      dotCircleContainer.connectedLinesData = [];
       shape.id = i;
       const g = shape.graphics;
       g.setStrokeStyle(1);
       g.beginStroke();
       g.beginFill(fillColor);
-      g.drawCircle(width,height,radius);
-      this.addChild(shape);
-      shape.addEventListener('mousedown',this.mouseDownEventHandler);
-      shape.addEventListener('pressmove',this.pressMoveEventHandler);
-      shape.addEventListener('mouseover',this.mouseOverEventHandler);
-      shape.addEventListener('pressup',this.pressUpEventHandler);
-      // console.log(shape);
-      this.shapeArr.push(shape);
+      g.drawCircle(0,0,radius);
+
+      dotCircleContainer.addChild(shape);
+      this.addChild(dotCircleContainer);
+      dotCircleContainer.addEventListener('mousedown',this.mouseDownEventHandler);
+      dotCircleContainer.addEventListener('pressmove',this.pressMoveEventHandler);
+      dotCircleContainer.addEventListener('mouseover',this.mouseOverEventHandler);
+      dotCircleContainer.addEventListener('pressup',this.pressUpEventHandler);
+      this.shapeArr.push(dotCircleContainer);
     }
   }
 
   arrangeDots(container){
     const {width, height} = container.getBounds();
-    // console.log('arranging dots');
     for(let i = 0; i<4; i++){
       if(i === 0){
         this.shapeArr[i].x = container.x + (width - 5)/2;
-        // this.shapeArr[i].y = container.y + height/2;
       }
       if(i === 1){
         this.shapeArr[i].y = container.y + (height - 5)/2;
@@ -63,43 +61,31 @@ export default class DotCircles extends createjs.Container {
   }
 
   mouseMoveEventHandler(event){
-    // console.log('mouse move');
   }
 
   mouseDownEventHandler(event){
-    console.log(event.target);
     event.stopPropagation();
-    // this.container.removeEventListeners();
     this.lineDraw = new ConnectorLine({},this.container);
-    this.lineDraw.create({x:event.currentTarget.x + this.config.x,y:event.currentTarget.y + this.config.y,endx:event.currentTarget.x + this.config.x,endy:event.currentTarget.y + this.config.y});
     const bounds = event.currentTarget.getBounds();
-    const { x, y } = event.currentTarget.localToGlobal(bounds.x,bounds.y);
-    // console.log(x,y);
-    this.diffX = x - event.stageX;
-    this.diffY = y - event.stageY;
+    const location = event.currentTarget.localToGlobal(bounds.x,bounds.y);
+    this.lineDraw.create({x:location.x,y:location.y,endx:location.x,endy:location.y});
+    this.diffX = location.x - event.stageX;
+    this.diffY = location.y - event.stageY;
   }
 
   pressMoveEventHandler(event){
     event.stopPropagation();
-
-    const { x, y } = this.globalToLocal(event.stageX ,event.stageY);
-    this.lineDraw.updateLine(x - this.diffX + this.config.x, y - this.diffY + this.config.y)
+    const bounds = this.getBounds();
+    this.lineDraw.updateLine(event.stageX ,event.stageY);
   }
 
   pressUpEventHandler(event){
-    // this.container.addEventListeners();
-    const endTarget = this.container.stage.getObjectUnderPoint(event.stageX,event.stageY);
     const startingPoint = event.currentTarget;
-    console.log(this.container.stage.getObjectUnderPoint(event.stageX,event.stageY));
-
-    // console.log(event.target.localToGlobal(event.stageX,event.stageY));
-    event.target.connectedLinesData.push({endTarget,startingPoint,line:this.lineDraw});
-    endTarget.connectedLinesData.push({endTarget,startingPoint,line:this.lineDraw});
-    console.log('in up event',event);
-    // console.log(getObjectUnderPoint);
-
+    event.currentTarget.stage.droppableDot.connectedLinesData.push({endTarget:event.currentTarget.stage.droppableDot,startingPoint,line:this.lineDraw});
+    startingPoint.connectedLinesData.push({endTarget:event.currentTarget.stage.droppableDot,startingPoint,line:this.lineDraw});
   }
 
   mouseOverEventHandler(event){
+    event.currentTarget.stage.droppableDot = event.currentTarget;
   }
 }

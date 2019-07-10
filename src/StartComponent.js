@@ -6,16 +6,16 @@ export default class StartComponent extends createjs.Container {
   constructor(config = {}){
     super();
     _.bindAll(this,'mouseDownEventHandler','pressMoveEventHandler','mouseDownEventHandler','mouseOverEventHandler','mouseOutEventHandler',"addEventListeners","removeEventListeners");
-    console.log('in StartComponent');
     this.create(config);
+    this.name = 'StartComponent';
     this.insertText('Start');
-    this.dotCirclesObj = new DotCircles({x:30,y:30},this);
+    this.dotCirclesObj = new DotCircles({x:0,y:0},this);
     this.addChild(this.dotCirclesObj);
   }
 
   create({width = 0, height = 0, radius = 30, fillColor = 'pink', strokeColor = '#000000'}){
     this.shape = new createjs.Shape();
-    this.shape.set({ x:60, y:60 });
+    this.shape.set({ x:30, y:30 });
     this.shape.setBounds(width,height,radius);
     this.setBounds(0 ,0 ,60,60);
     const g = this.shape.graphics;
@@ -25,16 +25,13 @@ export default class StartComponent extends createjs.Container {
     g.drawCircle(width,height,radius);
     this.addChild(this.shape);
     this.addEventListeners();
-
   }
 
   insertText(label = ''){
     const text = new createjs.Text(label, "15px Arial", "black");
-    text.x = 47;
-    text.y = 51;
+    text.x = 15;
+    text.y = 20;
     this.addChild(text);
-    // const {width, height} = this.getBounds();
-    // console.log('text:::',text);
   }
 
   addEventListeners(){
@@ -42,7 +39,6 @@ export default class StartComponent extends createjs.Container {
     this.addEventListener('pressmove',this.pressMoveEventHandler);
     this.addEventListener('mouseout',this.mouseOverEventHandler);
     this.addEventListener('mouseover',this.mouseOutEventHandler);
-
   }
 
   removeEventListeners(){
@@ -54,61 +50,46 @@ export default class StartComponent extends createjs.Container {
 
   mouseOutEventHandler(){
     this.dotCirclesObj.visible = true;
-
   }
 
   mouseOverEventHandler(event){
     this.dotCirclesObj.visible = false;
   }
+
   mouseMoveEventHandler(event){
-    // console.log('mouse move');
   }
 
   mouseDownEventHandler(event){
-    // console.log(event);
     const bounds = this.getBounds();
-    // console.log(bounds);
-    // const { x, y } = this.localToGlobal(bounds.x,bounds.y);
     this.diffX = event.stageX - this.x;
     this.diffY = event.stageY - this.y;
-    // console.log(this.diffX,this.diffY);
   }
 
   pressMoveEventHandler(event){
     const bounds = this.getBounds();
     const { x, y } = this.parent.globalToLocal(event.stageX,event.stageY);
-    // console.log(x,y);
     this.x = x - this.diffX;
     this.y = y - this.diffY;
 
-    console.log(this.dotCirclesObj);
     for(let i = 0;i<4;i++){
       if(this.dotCirclesObj.shapeArr[i].connectedLinesData.length !== 0 ){
-        console.log('updating lines');
         const linesArr = this.dotCirclesObj.shapeArr[i].connectedLinesData;
         _.forEach(linesArr,(data)=>{
-
-          console.log(data);
           data.line.shape.graphics.clear();
-          this.shape.graphics.setStrokeStyle(3);
-          this.shape.graphics.beginStroke('black');
-          console.log(data.startingPoint.x,data.startingPoint.y,data.endTarget.x,data.endTarget.y);
-          // this.shape.graphics.moveTo(data.startingPoint.x,data.startingPoint.y);
-          // this.shape.graphics.lineTo(data.endTarget.x,data.endTarget.y);
-          this.shape.graphics.endStroke();
-
+          const bounds = data.endTarget.getBounds();
+          const location = data.endTarget.localToGlobal(bounds.x,bounds.y);
+          const bounds1 = data.startingPoint.getBounds();
+          const location1 = data.startingPoint.localToGlobal(bounds1.x,bounds1.y);
+          data.line.updateLine(location1.x,location1.y,location.x,location.y);
         })
       }
-
     }
-
-    // if(this.dotCirclesObj)
   }
 
   mouseDown(x,y){
-
   }
+
   moveElement(x , y){
-
   }
+
 }

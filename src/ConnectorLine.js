@@ -5,17 +5,14 @@ export default class ConnectorLine extends createjs.Container {
   constructor(config = {},container){
     super();
     this.container = container;
-    this.container.addChild(this);
-    console.log('in ConnectorLine constructor');
+    this.container.stage.addChild(this);
   }
 
   create({x = 0, y = 0, endx = 0,endy = 0}){
-    console.log('in ConnectorLine create');
-
     this.shape = new createjs.Shape();
     this.shapeX = x;
     this.shapeY = y;
-    this.shape.graphics.setStrokeStyle(3);
+    this.shape.graphics.setStrokeStyle(1);
     this.shape.graphics.beginStroke('black');
     this.shape.graphics.moveTo(x, y);
     this.shape.graphics.lineTo(endx, endy);
@@ -23,13 +20,11 @@ export default class ConnectorLine extends createjs.Container {
     this.addChild(this.shape);
   }
 
-  updateLine(x ,y){
-    console.log('in ConnectorLine update');
-
+  updateLine(x ,y, shapex = this.shapeX, shapey = this.shapeY){
     this.shape.graphics.clear();
-    this.shape.graphics.setStrokeStyle(3);
+    this.shape.graphics.setStrokeStyle(1);
     this.shape.graphics.beginStroke('black');
-    this.shape.graphics.moveTo(this.shapeX, this.shapeY);
+    this.shape.graphics.moveTo(shapex, shapey);
     this.shape.graphics.lineTo(x, y);
     this.shape.graphics.endStroke();
   }
