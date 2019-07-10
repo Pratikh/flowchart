@@ -9,7 +9,7 @@ export default class ConnectorLine extends createjs.Container {
     console.log('in ConnectorLine constructor');
   }
 
-  create({x = 0, y = 0, endx,endy}){
+  create({x = 0, y = 0, endx = 0,endy = 0}){
     console.log('in ConnectorLine create');
 
     this.shape = new createjs.Shape();
