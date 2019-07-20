@@ -1,95 +1,33 @@
-import * as createjs from 'createjs-module';
-import * as _ from 'lodash';
-import DotCircles from './DotCircles.js'
+import SHARED_DEPENDENCIES from './MainModule/index';
+import Shape from './Shape';
+import TextSetter from './TextSetter';
 
-export default class ModuleComponent extends createjs.Container {
-  constructor(config = {}){
+const { createjs } = SHARED_DEPENDENCIES;
+
+export default class ModuleComponent extends Shape {
+  constructor(config = {}) {
     super();
-    _.bindAll(this,'mouseDownEventHandler','pressMoveEventHandler','mouseDownEventHandler','mouseOutEventHandler','mouseOverEventHandler',"addEventListeners","removeEventListeners");
     this.create(config);
     this.name = 'ModuleComponent';
-    this.insertText('Module',50,240);
-    this.dotCirclesObj = new DotCircles({x:30,y:220},this);
-    this.addChild(this.dotCirclesObj);
+    const text = new TextSetter({ editable: false, label: 'Model', container: this });
+    this.addChild(text);
+    this.addDotsToShape();
   }
 
-  create({width = 90 , height = 50 ,x = 30,y = 220 , fillColor = 'pink', strokeColor = '#000000'}){
+  create({
+    width = 90, height = 50, x = 0, y = 0, fillColor = 'pink',
+  }) {
     this.shape = new createjs.Shape();
-    this.shape.setBounds(x,y,width,height);
-    this.setBounds(x,y,width,height);
+    this.shape.set({ x: 0, y: 0 });
+
+    this.shape.setBounds(x, y, width, height);
+    this.setBounds(x, y, width, height);
     const g = this.shape.graphics;
     g.setStrokeStyle(1);
     g.beginStroke('black');
     g.beginFill(fillColor);
-    g.drawRoundRect(x,y,width,height,20);
+    g.drawRoundRect(x, y, width, height, 20);
     this.addChild(this.shape);
     this.addEventListeners();
-  }
-
-  insertText(label = '',x ,y ){
-    const text = new createjs.Text(label, "15px Arial", "black");
-    text.x = x;
-    text.y = y;
-    this.addChild(text);
-  }
-
-  addEventListeners(){
-    this.addEventListener('mousedown',this.mouseDownEventHandler);
-    this.addEventListener('pressmove',this.pressMoveEventHandler);
-    this.addEventListener('mouseout',this.mouseOverEventHandler);
-    this.addEventListener('mouseover',this.mouseOutEventHandler);
-
-  }
-
-  removeEventListeners(){
-    this.removeEventListener('mousedown',this.mouseDownEventHandler);
-    this.removeEventListener('pressmove',this.pressMoveEventHandler);
-    this.removeEventListener('mouseover',this.mouseOverEventHandler);
-    this.removeEventListener('mouseout',this.mouseOutEventHandler);
-  }
-
-  mouseOutEventHandler(){
-    this.dotCirclesObj.visible = true;
-
-  }
-
-  mouseOverEventHandler(event){
-    this.dotCirclesObj.visible = false;
-  }
-
-  mouseMoveEventHandler(event){
-  }
-
-  mouseDownEventHandler(event){
-    const bounds = this.getBounds();
-    this.diffX = event.stageX - this.x;
-    this.diffY = event.stageY - this.y;
-  }
-
-  pressMoveEventHandler(event){
-    const bounds = this.getBounds();
-    const { x, y } = this.parent.globalToLocal(event.stageX,event.stageY);
-    this.x = x - this.diffX;
-    this.y = y - this.diffY;
-
-    for(let i = 0;i<4;i++){
-      if(this.dotCirclesObj.shapeArr[i].connectedLinesData.length !== 0 ){
-        const linesArr = this.dotCirclesObj.shapeArr[i].connectedLinesData;
-        _.forEach(linesArr,(data)=>{
-          data.line.shape.graphics.clear();
-          const bounds = data.endTarget.getBounds();
-          const location = data.endTarget.localToGlobal(bounds.x,bounds.y);
-          const bounds1 = data.startingPoint.getBounds();
-          const location1 = data.startingPoint.localToGlobal(bounds1.x,bounds1.y);
-          data.line.updateLine(location1.x,location1.y,location.x,location.y);
-        })
-      }
-    }
-  }
-
-  mouseDown(x,y){
-  }
-
-  moveElement(x , y){
   }
 }

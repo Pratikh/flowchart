@@ -1,0 +1,4 @@
+// eslint-disable-line no-undef
+// eslint-disable-line no-unused-expressions
+// eslint-disable-line no-param-reassign
+// eslint-disable-line class-methods-use-this

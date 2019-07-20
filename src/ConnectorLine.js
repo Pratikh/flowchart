@@ -1,26 +1,26 @@
-import * as createjs from 'createjs-module';
-import * as _ from 'lodash';
+import SHARED_DEPENDENCIES from './MainModule';
+
+const { createjs } = SHARED_DEPENDENCIES;
 
 export default class ConnectorLine extends createjs.Container {
-  constructor(config = {},container){
+  constructor({ container }) {
     super();
     this.container = container;
     this.container.stage.addChild(this);
   }
 
-  create({x = 0, y = 0, endx = 0,endy = 0}){
+  create({ x = 0, y = 0 }) {
     this.shape = new createjs.Shape();
     this.shapeX = x;
     this.shapeY = y;
     this.shape.graphics.setStrokeStyle(1);
     this.shape.graphics.beginStroke('black');
     this.shape.graphics.moveTo(x, y);
-    this.shape.graphics.lineTo(endx, endy);
     this.shape.graphics.endStroke();
     this.addChild(this.shape);
   }
 
-  updateLine(x ,y, shapex = this.shapeX, shapey = this.shapeY){
+  updateLine(x, y, shapex = this.shapeX, shapey = this.shapeY) {
     this.shape.graphics.clear();
     this.shape.graphics.setStrokeStyle(1);
     this.shape.graphics.beginStroke('black');
