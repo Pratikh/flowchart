@@ -1,18 +1,19 @@
-const path = require('path')
-const BUILD_DIR = path.resolve(__dirname, 'dist/')
-const APP_DIR = path.resolve(__dirname, 'src/')
-const HtmlWebPackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+// const path = require('path');
+//
+// const BUILD_DIR = path.resolve(__dirname, 'dist/');
+// const APP_DIR = path.resolve(__dirname, 'src/');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-var config = {
+const config = {
 
   devServer: {
     host: 'localhost',
     open: true,
     overlay: {
       warnings: false,
-      errors: true
-    }
+      errors: true,
+    },
   },
   devtool: 'eval-source-map',
   mode: 'development',
@@ -23,37 +24,37 @@ var config = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
-        }
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.html$/,
         use: [
           {
             loader: 'html-loader',
-            options: { minimize: true }
-          }
-        ]
+            options: { minimize: true },
+          },
+        ],
       },
       {
         test: /\.css$/,
         use: [
           'style-loader',
           MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
-      }
-    ]
+          'css-loader',
+        ],
+      },
+    ],
   },
   plugins: [
     new HtmlWebPackPlugin({
       template: './src/index.html',
-      filename: './index.html'
+      filename: './index.html',
     }),
     new MiniCssExtractPlugin({
-      filename: './css/bundle.css'
-    })
-  ]
-}
+      filename: './css/bundle.css',
+    }),
+  ],
+};
 
-module.exports = config
+module.exports = config;

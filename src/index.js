@@ -4,7 +4,7 @@ import StartComponent from './StartComponent';
 import NormalComponent from './NormalComponent';
 import ModuleComponent from './ModuleComponent';
 import TextSetter from './TextSetter';
-import playArea from './PlayArea';
+// import playArea from './PlayArea';
 // import { initailShapeData, outerShapeContainerData } from './Constants';
 // import OuterContainer from './setupStage';
 
@@ -13,7 +13,7 @@ const { createjs, stage, _ } = SHARED_DEPENDENCIES;
 class Init {
   constructor() {
     this.stage = stage.stage;
-    console.log(this.stage);
+    // console.log(this.stage);
     this.startArr = [];
     this.normalArr = [];
     this.moduleArr = [];
@@ -50,7 +50,7 @@ class Init {
       // this.playArea.emptyContainer.addChild(startComponentObj);
       this.startArr.push(startComponentObj);
       startComponentObj.mouseDownEventHandler(event);
-      console.log(this.OuterContainer);
+      // console.log(this.OuterContainer);
     });
 
     shape.addEventListener('pressmove', (event) => {

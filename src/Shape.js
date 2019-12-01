@@ -83,7 +83,8 @@ export default class Shape extends createjs.Container {
     } = outerShapeContainerData;
     const { width, height } = this.getBounds();
     const topCondition = stageX > (ox + this.diffX) && stageY > (oy + this.diffY);
-    const bottomCondition = stageX < (ox + outerShapeWidth - (width - this.diffX)) && stageY < (oy + outerShapeHeight - (height - this.diffY));
+    const bottomCondition = stageX < (ox + outerShapeWidth - (width - this.diffX))
+    && stageY < (oy + outerShapeHeight - (height - this.diffY));
     const boundaryCondition = topCondition && bottomCondition;
     return boundaryCondition;
   }

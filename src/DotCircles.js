@@ -70,7 +70,7 @@ export default class DotCircles extends createjs.Container {
   }
 
   mouseDownEventHandler(event) {
-    console.log(this.container);
+    // console.log(this.container, 'hello');
     event.stopPropagation();
     const { stageX, stageY } = event;
     if (this.container.boundaryConditionChecker({ stageX, stageY })) {

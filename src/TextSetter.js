@@ -14,7 +14,7 @@ export default class TextSetter extends createjs.Container {
       this.enable = editable;
       this.text = new createjs.Text(label, '15px Arial', 'black');
       this.addChild(this.text);
-      this.text.addEventListener('dblclick', () => { console.log('in inputbox'); });
+      // this.text.addEventListener('dblclick', () => { console.log('in inputbox'); });
     } else {
     // future use case
     }

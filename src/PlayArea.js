@@ -32,10 +32,11 @@ class PlayArea {
     shapeContainer.addChild(shape);
     shapeContainer.setBounds(0, 0, width, height);
     shapeContainer.set({ x, y });
-    shape.graphics.setStrokeStyle(strokeStyle).beginStroke(strokeColor).drawRect(0, 0, width, height);
+    shape.graphics.setStrokeStyle(strokeStyle).beginStroke(strokeColor);
+    shape.graphics.drawRect(0, 0, width, height);
     shapeContainer.addChild(shape);
     this.stage.addChild(shapeContainer);
-    console.log(draggable);
+    // console.log(draggable);
     draggable && this.addDragger({ // eslint-disable-line no-unused-expressions
       width, height, x, y, container: shapeContainer,
     });
@@ -65,13 +66,13 @@ class PlayArea {
       const { stageX, stageY } = event;
       this.diffX = stageX - this.emptyContainer.x;
       this.diffY = stageY - this.emptyContainer.y;
-      console.log(this.diffX, this.diffY);
+      // console.log(this.diffX, this.diffY);
       // this.emptyContainer.x = event.stageX;
       // this.emptyContainer.y = event.stageY;
     });
 
-    container.addEventListener('pressmove', (event) => {
-      console.log('playArea pressmove', event);
+    container.addEventListener('pressmove', () => {
+      // console.log('playArea pressmove', event);
       // const { stageX, stageY } = event;
       // this.emptyContainer.x = stageX - this.diffX;
       // this.emptyContainer.y = stageY - this.diffY;
