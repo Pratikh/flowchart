@@ -4,22 +4,16 @@ import StartComponent from './StartComponent';
 import NormalComponent from './NormalComponent';
 import ModuleComponent from './ModuleComponent';
 import TextSetter from './TextSetter';
-// import playArea from './PlayArea';
-// import { initailShapeData, outerShapeContainerData } from './Constants';
-// import OuterContainer from './setupStage';
 
 const { createjs, stage, _ } = SHARED_DEPENDENCIES;
 
 class Init {
   constructor() {
     this.stage = stage.stage;
-    // console.log(this.stage);
     this.startArr = [];
     this.normalArr = [];
     this.moduleArr = [];
     this.stage.droppableDot = null;
-    // this.playArea = playArea;
-    // this.stage.playArea = playArea;
     this.createStartComponent();
     this.createNormalComponent();
     this.createModelComponent();
@@ -39,7 +33,6 @@ class Init {
     g.beginFill('pink');
     g.drawCircle(0, 0, 30);
     shapeContainer.addChild(shape);
-    // this.OuterContainer.container.addChild(shapeContainer);
     this.stage.addChild(shapeContainer);
     const text = new TextSetter({ editable: false, label: 'Start', container: shapeContainer });
     shapeContainer.addChild(text);
@@ -47,10 +40,8 @@ class Init {
       const startComponentObj = new StartComponent();
       startComponentObj.set({ x: x / 2, y: y / 2 });
       this.stage.addChild(startComponentObj);
-      // this.playArea.emptyContainer.addChild(startComponentObj);
       this.startArr.push(startComponentObj);
       startComponentObj.mouseDownEventHandler(event);
-      // console.log(this.OuterContainer);
     });
 
     shape.addEventListener('pressmove', (event) => {

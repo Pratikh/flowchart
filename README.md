@@ -1,5 +1,5 @@
 # Flowchart in canvas
-
+  This is just simple canvas based flow chart demo project.
 ### Installation
 
 * git clone

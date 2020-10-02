@@ -1,7 +1,5 @@
 import SHARED_DEPENDENCIES from './MainModule/index';
-
 import ConnectorLine from './ConnectorLine';
-// import Arrow from './Arrow';
 
 const { createjs, _ } = SHARED_DEPENDENCIES;
 
@@ -70,7 +68,6 @@ export default class DotCircles extends createjs.Container {
   }
 
   mouseDownEventHandler(event) {
-    // console.log(this.container, 'hello');
     event.stopPropagation();
     const { stageX, stageY } = event;
     if (this.container.boundaryConditionChecker({ stageX, stageY })) {
@@ -104,7 +101,6 @@ export default class DotCircles extends createjs.Container {
       event.currentTarget.stage.droppableDot.connectedLinesData.push(connectedLinesData);
       startingPoint.connectedLinesData.push(connectedLinesData);
     }
-    // this.arrow = new Arrow(connectedLinesData);
   }
 
   mouseOverEventHandler(event) {

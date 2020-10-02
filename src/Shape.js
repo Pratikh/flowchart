@@ -10,10 +10,6 @@ export default class Shape extends createjs.Container {
     _.bindAll(this, 'boundaryConditionChecker', 'pressUpEventHandler', 'addDotsToShape', 'mouseDownEventHandler', 'pressMoveEventHandler', 'mouseDownEventHandler', 'mouseOutEventHandler', 'mouseOverEventHandler');
   }
 
-  create() { // eslint-disable-line class-methods-use-this
-    // need to override this class
-  }
-
   addDotsToShape() {
     this.dotCirclesObj = new DotCircles({ x: 0, y: 0, container: this });
     this.addChild(this.dotCirclesObj);
@@ -28,7 +24,6 @@ export default class Shape extends createjs.Container {
   }
 
   pressUpEventHandler() {
-    // console.log('here', event, this.globalToLocal(event.stageX, event.stageY));
     this.a = 's';
   }
 
