@@ -1,9 +1,6 @@
-// const path = require('path');
-//
-// const BUILD_DIR = path.resolve(__dirname, 'dist/');
-// const APP_DIR = path.resolve(__dirname, 'src/');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
 
 const config = {
 
@@ -55,6 +52,10 @@ const config = {
       filename: './css/bundle.css',
     }),
   ],
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'build'),
+  },
 };
 
 module.exports = config;
